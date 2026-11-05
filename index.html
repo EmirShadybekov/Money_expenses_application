@@ -3,954 +3,559 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Money Expenses Tracker — 5 Design Concepts & Interactive Prototype</title>
+  <title>Spendee-Style Money Expenses App — 5 Premium Designs</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;1,600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    /* CSS Variables for Dynamic 5 Design Themes */
-    :root {
-      --font-body: 'Plus Jakarta Sans', sans-serif;
-      --font-display: 'Plus Jakarta Sans', sans-serif;
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin: 0;
+      background: #0B0E14;
+      color: #E2E8F0;
     }
 
-    /* THEME 1: Minimalist Nordic / Clean Sage (Default) */
-    .theme-nordic {
-      --bg-canvas: #F8F9FA;
-      --bg-surface: #FFFFFF;
-      --bg-surface-elevated: #F1F4F2;
-      --border-color: #E5E9E7;
-      --text-primary: #1C2421;
-      --text-secondary: #5F6B66;
-      --accent: #2D6A4F;
-      --accent-hover: #1B4332;
-      --accent-light: #D8F3DC;
-      --hub-bg: #FFFFFF;
-      --hub-shadow: 0 10px 30px rgba(45, 106, 79, 0.08);
-      --card-radius: 18px;
-      --border-style: 1px solid var(--border-color);
-      --font-body: 'Plus Jakarta Sans', sans-serif;
-      --font-display: 'Plus Jakarta Sans', sans-serif;
+    /* THEME 1: Spendee Vibrant White (The exact aesthetic from your screenshot) */
+    .theme-spendee {
+      --bg-page: #F4F6F9;
+      --bg-card: #FFFFFF;
+      --bg-card-subtle: #F8FAFC;
+      --border-color: #E2E8F0;
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --accent-primary: #10B981;
+      --accent-btn: #10B981;
+      --accent-btn-text: #FFFFFF;
+      --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.06);
+      --donut-center-bg: #FFFFFF;
     }
 
-    /* THEME 2: Dark Fintech / Obsidian & Electric Mint */
-    .theme-fintech {
-      --bg-canvas: #090B10;
-      --bg-surface: #121620;
-      --bg-surface-elevated: #1A202E;
-      --border-color: #232B3E;
-      --text-primary: #F8FAFC;
-      --text-secondary: #94A3B8;
-      --accent: #00F59B;
-      --accent-hover: #00D284;
-      --accent-light: rgba(0, 245, 155, 0.12);
-      --hub-bg: radial-gradient(circle at center, #1E2738 0%, #121620 100%);
-      --hub-shadow: 0 0 35px rgba(0, 245, 155, 0.18), inset 0 1px 0 rgba(255,255,255,0.1);
-      --card-radius: 20px;
-      --border-style: 1px solid var(--border-color);
-      --font-body: 'Outfit', sans-serif;
-      --font-display: 'Outfit', sans-serif;
+    /* THEME 2: Revolut Dark Glow (Premium Fintech Dark) */
+    .theme-darkglow {
+      --bg-page: #080A0F;
+      --bg-card: #111520;
+      --bg-card-subtle: #171D2C;
+      --border-color: #1F2738;
+      --text-main: #F8FAFC;
+      --text-muted: #8E9BAE;
+      --accent-primary: #00F59B;
+      --accent-btn: #00F59B;
+      --accent-btn-text: #080A0F;
+      --shadow-soft: 0 15px 35px rgba(0, 0, 0, 0.4);
+      --donut-center-bg: #111520;
     }
 
-    /* THEME 3: Neo-Brutalism / Playful Pop */
-    .theme-brutalist {
-      --bg-canvas: #FFFBEB;
-      --bg-surface: #FFFFFF;
-      --bg-surface-elevated: #FEF08A;
-      --border-color: #18181B;
-      --text-primary: #18181B;
-      --text-secondary: #3F3F46;
-      --accent: #FF5E5B;
-      --accent-hover: #E04441;
-      --accent-light: #BAE6FD;
-      --hub-bg: #FFE4E6;
-      --hub-shadow: 6px 6px 0px #18181B;
-      --card-radius: 12px;
-      --border-style: 2.5px solid #18181B;
-      --font-body: 'Plus Jakarta Sans', sans-serif;
-      --font-display: 'Plus Jakarta Sans', sans-serif;
+    /* THEME 3: Apple Rings Glassmorphic (iOS 18) */
+    .theme-appleglass {
+      --bg-page: #EDF2F7;
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --bg-card-subtle: rgba(255, 255, 255, 0.6);
+      --border-color: rgba(255, 255, 255, 0.9);
+      --text-main: #0F172A;
+      --text-muted: #475569;
+      --accent-primary: #6366F1;
+      --accent-btn: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+      --accent-btn-text: #FFFFFF;
+      --shadow-soft: 0 20px 40px rgba(99, 102, 241, 0.1);
+      --donut-center-bg: rgba(255, 255, 255, 0.9);
     }
 
-    /* THEME 4: Apple Glassmorphism / Frosted Iris */
-    .theme-apple {
-      --bg-canvas: #EEF2F6;
-      --bg-surface: rgba(255, 255, 255, 0.75);
-      --bg-surface-elevated: rgba(255, 255, 255, 0.9);
-      --border-color: rgba(255, 255, 255, 0.8);
-      --text-primary: #0F172A;
-      --text-secondary: #475569;
-      --accent: #4F46E5;
-      --accent-hover: #4338CA;
-      --accent-light: rgba(79, 70, 229, 0.1);
-      --hub-bg: rgba(255, 255, 255, 0.85);
-      --hub-shadow: 0 20px 40px rgba(79, 70, 229, 0.12), 0 1px 3px rgba(0,0,0,0.05);
-      --card-radius: 24px;
-      --border-style: 1px solid var(--border-color);
-      --backdrop-blur: 16px;
-      --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-      --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    /* THEME 4: Warm Terracotta Pastel (Modern Editorial) */
+    .theme-terracotta {
+      --bg-page: #FBF9F5;
+      --bg-card: #FFFFFF;
+      --bg-card-subtle: #F5EFE6;
+      --border-color: #EBDDCF;
+      --text-main: #2A2118;
+      --text-muted: #7D6F63;
+      --accent-primary: #E07A5F;
+      --accent-btn: #E07A5F;
+      --accent-btn-text: #FFFFFF;
+      --shadow-soft: 0 10px 30px rgba(224, 122, 95, 0.08);
+      --donut-center-bg: #FFFFFF;
     }
 
-    /* THEME 5: Retro Cyber Terminal */
-    .theme-terminal {
-      --bg-canvas: #0C0D0E;
-      --bg-surface: #151719;
-      --bg-surface-elevated: #1E2124;
-      --border-color: #2E3338;
-      --text-primary: #00FF66;
-      --text-secondary: #8E9C95;
-      --accent: #00FF66;
-      --accent-hover: #00CC52;
-      --accent-light: rgba(0, 255, 102, 0.1);
-      --hub-bg: #151719;
-      --hub-shadow: 0 0 25px rgba(0, 255, 102, 0.15);
-      --card-radius: 8px;
-      --border-style: 1px solid #00FF66;
-      --font-body: 'JetBrains Mono', monospace;
-      --font-display: 'JetBrains Mono', monospace;
+    /* THEME 5: Cyber Neon Violet (Modern Web3) */
+    .theme-cyberviolet {
+      --bg-page: #0D0B18;
+      --bg-card: #17142A;
+      --bg-card-subtle: #221E3D;
+      --border-color: #2F2A52;
+      --text-main: #FFFFFF;
+      --text-muted: #A39BCC;
+      --accent-primary: #C084FC;
+      --accent-btn: linear-gradient(135deg, #A855F7 0%, #EC4899 100%);
+      --accent-btn-text: #FFFFFF;
+      --shadow-soft: 0 15px 35px rgba(168, 85, 247, 0.25);
+      --donut-center-bg: #17142A;
     }
 
-    /* Dynamic element classes */
-    .app-canvas {
-      background-color: var(--bg-canvas);
-      color: var(--text-primary);
-      font-family: var(--font-body);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .app-surface {
-      background-color: var(--bg-surface);
-      border: var(--border-style);
-      border-radius: var(--card-radius);
-      backdrop-filter: blur(var(--backdrop-blur, 0px));
-      transition: all 0.2s ease;
-    }
-    .app-hub {
-      background: var(--hub-bg);
-      border: var(--border-style);
-      box-shadow: var(--hub-shadow);
-      border-radius: 9999px;
+    .app-root {
+      background-color: var(--bg-page);
+      color: var(--text-main);
       transition: all 0.3s ease;
     }
-    .app-line {
-      stroke: var(--accent);
-      stroke-opacity: 0.35;
-      transition: all 0.3s ease;
+    .app-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-soft);
+      transition: all 0.25s ease;
     }
-    .category-bubble {
-      background-color: var(--bg-surface);
-      border: var(--border-style);
-      border-radius: var(--card-radius);
-      box-shadow: var(--hub-shadow);
-      transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-    .category-bubble:hover {
-      transform: translateY(-2px) scale(1.03);
+    .app-card-subtle {
+      background-color: var(--bg-card-subtle);
     }
 
-    /* Device frame helper */
-    .mobile-frame {
-      max-width: 420px;
-      height: 840px;
-      border-radius: 44px;
-      border: 10px solid #1E293B;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
-      overflow-y: auto;
-      overflow-x: hidden;
-      margin: 0 auto;
+    /* Spendee Donut Segments with dasharray */
+    .segment-food { stroke: #EC4899; }      /* Pink 24% */
+    .segment-travel { stroke: #F97316; }    /* Orange 22% */
+    .segment-house { stroke: #06B6D4; }     /* Cyan 20% */
+    .segment-bar { stroke: #10B981; }       /* Green 15% */
+    .segment-car { stroke: #EF4444; }       /* Red 13% */
+    .segment-grocery { stroke: #FBBF24; }   /* Yellow 6% */
+
+    /* Floating badges */
+    .donut-badge {
+      transition: transform 0.2s ease;
+      cursor: pointer;
     }
-    .desktop-frame {
-      max-width: 1100px;
-      min-height: 720px;
-      border-radius: 20px;
-      border: 1px solid #334155;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-      margin: 0 auto;
+    .donut-badge:hover {
+      transform: scale(1.08);
     }
   </style>
 </head>
-<body class="bg-[#0A0C10] text-slate-100 min-h-screen p-3 md:p-6">
+<body class="p-3 md:p-6">
 
-  <!-- TOP CONTROL TOOLBAR -->
+  <!-- TOP BAR: THEME SWITCHER & CONTROLS -->
   <header class="max-w-6xl mx-auto mb-6 bg-[#121620] border border-[#232B3E] rounded-2xl p-4 md:p-5 shadow-2xl">
     <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
       <div>
-        <div class="flex items-center gap-3">
-          <span class="px-2.5 py-1 text-xs font-bold uppercase rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-            Design Studio & Prototype
+        <div class="flex items-center gap-2.5">
+          <span class="px-2.5 py-0.5 text-xs font-extrabold uppercase rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            Spendee Style
           </span>
-          <h1 class="text-xl md:text-2xl font-black text-white tracking-tight">Money Expenses App</h1>
+          <h1 class="text-xl md:text-2xl font-black text-white tracking-tight">Personal Expenses Studio</h1>
         </div>
         <p class="text-xs text-slate-400 mt-1">
-          Based on your drawings: Center radial expense hub + 12-month calendar expense breakdown. Switch between 5 curated designs!
+          Crafted to match the exact Spendee reference: Multi-colored segmented Donut Chart, floating category badges with %, stats & calendar!
         </p>
       </div>
 
-      <!-- Controls: Style Switcher -->
+      <!-- 5 Premium Design Styles Switcher -->
       <div class="flex flex-wrap items-center gap-2">
-        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider mr-1">Design Style:</span>
-        <button onclick="setTheme('nordic')" id="btn-nordic" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white shadow">
-          1. Nordic Minimal
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider mr-1">Choose Style:</span>
+        <button onclick="setTheme('spendee')" id="btn-spendee" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-emerald-500 text-white shadow-md">
+          1. Spendee Vibrant
         </button>
-        <button onclick="setTheme('fintech')" id="btn-fintech" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-800">
-          2. Dark Fintech
+        <button onclick="setTheme('darkglow')" id="btn-darkglow" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-800">
+          2. Revolut Dark
         </button>
-        <button onclick="setTheme('brutalist')" id="btn-brutalist" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-800">
-          3. Neo-Brutalism
+        <button onclick="setTheme('appleglass')" id="btn-appleglass" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-800">
+          3. Apple Glass
         </button>
-        <button onclick="setTheme('apple')" id="btn-apple" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-800">
-          4. Apple Glass
+        <button onclick="setTheme('terracotta')" id="btn-terracotta" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-800">
+          4. Warm Pastel
         </button>
-        <button onclick="setTheme('terminal')" id="btn-terminal" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-800">
-          5. Retro Cyber
+        <button onclick="setTheme('cyberviolet')" id="btn-cyberviolet" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-800">
+          5. Cyber Violet
         </button>
       </div>
     </div>
 
-    <!-- Second Row: Viewport (Mobile vs Desktop) & Screens (Main vs Calendar) -->
+    <!-- Screen Navigation Switcher -->
     <div class="mt-4 pt-3 border-t border-[#232B3E] flex flex-wrap items-center justify-between gap-3 text-xs">
       <div class="flex items-center gap-2">
-        <span class="text-slate-400 font-semibold uppercase">Device Preview:</span>
-        <button onclick="setDevice('mobile')" id="btn-device-mobile" class="px-3 py-1 rounded-md bg-indigo-600 text-white font-medium flex items-center gap-1.5">
-          📱 Phone View
+        <span class="text-slate-400 font-semibold uppercase">View:</span>
+        <button onclick="setScreen('hub')" id="btn-screen-hub" class="px-3 py-1 rounded-md bg-white/20 text-white font-bold flex items-center gap-1.5">
+          🍩 Overview (Donut Hub)
         </button>
-        <button onclick="setDevice('desktop')" id="btn-device-desktop" class="px-3 py-1 rounded-md text-slate-400 hover:text-white bg-slate-800/60 font-medium flex items-center gap-1.5">
-          💻 Desktop View
+        <button onclick="setScreen('calendar')" id="btn-screen-calendar" class="px-3 py-1 rounded-md text-slate-400 hover:text-white bg-slate-800/60 font-medium flex items-center gap-1.5">
+          📅 2026 Calendar Breakdown
         </button>
       </div>
 
-      <div class="flex items-center gap-2">
-        <span class="text-slate-400 font-semibold uppercase">Page:</span>
-        <button onclick="setScreen('main')" id="btn-screen-main" class="px-3 py-1 rounded-md bg-white/20 text-white font-bold flex items-center gap-1.5">
-          🎯 Main Page (Radial Hub)
-        </button>
-        <button onclick="setScreen('calendar')" id="btn-screen-calendar" class="px-3 py-1 rounded-md text-slate-400 hover:text-white bg-slate-800/60 font-medium flex items-center gap-1.5">
-          📅 Calendar (2026 Breakdown)
-        </button>
-        <button onclick="setScreen('categories')" id="btn-screen-categories" class="px-3 py-1 rounded-md text-slate-400 hover:text-white bg-slate-800/60 font-medium flex items-center gap-1.5">
-          🏷️ Suggested Categories
-        </button>
+      <div class="flex items-center gap-2 text-xs text-slate-400">
+        <span>Device Mode:</span>
+        <button onclick="toggleDevice('mobile')" id="btn-dev-mob" class="px-2.5 py-0.5 rounded bg-indigo-600 text-white font-bold">📱 Phone (390px)</button>
+        <button onclick="toggleDevice('tablet')" id="btn-dev-tab" class="px-2.5 py-0.5 rounded bg-slate-800 text-slate-300">💻 Full Width</button>
       </div>
     </div>
   </header>
 
-  <!-- WORKSPACE CONTAINER WITH DEVICE FRAME -->
-  <main class="max-w-6xl mx-auto">
-    <div id="deviceWrapper" class="mobile-frame app-canvas theme-nordic relative transition-all duration-300">
+  <!-- MOCKUP CONTAINER -->
+  <main class="max-w-6xl mx-auto flex justify-center pb-12">
+    <div id="deviceFrame" class="w-full max-w-[410px] min-h-[840px] rounded-[44px] border-[10px] border-[#1E2533] shadow-2xl overflow-hidden app-root theme-spendee transition-all duration-300 flex flex-col justify-between">
 
-      <!-- ================= PAGE 1: MAIN PAGE (DRAWING 1 - RADIAL EXPENSE HUB) ================= -->
-      <div id="page-main" class="p-5 flex flex-col justify-between min-h-full relative overflow-hidden">
+      <!-- ================= SCREEN 1: SPENDEE DONUT OVERVIEW (DRAWING 1 + REFERENCE) ================= -->
+      <div id="screen-hub" class="flex flex-col flex-1 justify-between p-5">
         
-        <!-- Top Bar: "Calendar" Label on Top Left (As requested in your sketch!) -->
-        <div class="flex items-center justify-between z-20 mb-3">
-          <button onclick="setScreen('calendar')" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full app-surface font-bold text-xs hover:opacity-90 transition-opacity">
-            <span>📅</span>
-            <span>Calendar</span>
-          </button>
-          
-          <div class="flex items-center gap-2 text-xs font-semibold px-3 py-1 rounded-full app-surface">
-            <span>November 2026</span>
+        <!-- Status Bar -->
+        <div>
+          <div class="flex justify-between items-center text-[11px] font-semibold opacity-70 px-1 mb-2">
+            <span>15:35</span>
+            <div class="w-20 h-4 bg-black/15 rounded-full"></div>
+            <span>100% 🔋</span>
           </div>
 
-          <button onclick="openAddModal()" class="w-8 h-8 rounded-full app-surface flex items-center justify-center font-bold text-base hover:scale-105 transition-transform" title="Add Expense">
-            +
-          </button>
+          <!-- Header (Matching Spendee screenshot) -->
+          <div class="flex items-center justify-between mt-1">
+            <button onclick="setScreen('calendar')" class="flex items-center gap-1.5 px-3 py-1 rounded-full app-card text-xs font-bold hover:scale-105 transition-transform" title="Open Calendar">
+              <span>📅</span>
+              <span class="font-extrabold">Calendar</span>
+            </button>
+
+            <div class="text-center">
+              <h2 class="text-xs font-bold uppercase tracking-wider opacity-60">Cash Wallet</h2>
+              <div class="flex items-center gap-2 text-xs font-bold mt-0.5">
+                <span class="opacity-50 text-[10px]">JULY</span>
+                <span class="text-emerald-500 font-extrabold border-b-2 border-emerald-500 pb-0.5">AUGUST 2026</span>
+                <span class="opacity-50 text-[10px]">SEPT</span>
+              </div>
+            </div>
+
+            <button class="w-8 h-8 rounded-full app-card flex items-center justify-center font-bold text-xs" title="Search">
+              🔍
+            </button>
+          </div>
         </div>
 
-        <!-- Center Stage: Radial Spoke System -->
-        <div class="relative my-auto py-8 flex items-center justify-center min-h-[500px]">
+        <!-- ================= CENTER STAGE: SPENDEE-STYLE SEGMENTED DONUT CHART ================= -->
+        <div class="relative my-4 flex items-center justify-center h-[340px]">
 
-          <!-- Background SVG Connecting Lines radiating from center to categories -->
-          <svg class="absolute inset-0 w-full h-full pointer-events-none z-0" xmlns="http://www.w3.org/2000/svg">
-            <!-- Center to Top (Housing) -->
-            <line x1="50%" y1="50%" x2="50%" y2="8%" class="app-line" stroke-width="2" stroke-dasharray="4 3" />
-            <!-- Center to Top-Right (Grocery - marked in your drawing!) -->
-            <line x1="50%" y1="50%" x2="84%" y2="20%" class="app-line" stroke-width="2.5" />
-            <!-- Center to Right (Transport) -->
-            <line x1="50%" y1="50%" x2="86%" y2="52%" class="app-line" stroke-width="2" stroke-dasharray="4 3" />
-            <!-- Center to Bottom-Right (Entertainment) -->
-            <line x1="50%" y1="50%" x2="80%" y2="82%" class="app-line" stroke-width="2" stroke-dasharray="4 3" />
-            <!-- Center to Bottom (Health) -->
-            <line x1="50%" y1="50%" x2="50%" y2="92%" class="app-line" stroke-width="2" stroke-dasharray="4 3" />
-            <!-- Center to Bottom-Left (Shopping) -->
-            <line x1="50%" y1="50%" x2="18%" y2="82%" class="app-line" stroke-width="2" stroke-dasharray="4 3" />
-            <!-- Center to Left (Tech & Subscriptions) -->
-            <line x1="50%" y1="50%" x2="14%" y2="52%" class="app-line" stroke-width="2" stroke-dasharray="4 3" />
-            <!-- Center to Top-Left (Dining & Cafes) -->
-            <line x1="50%" y1="50%" x2="16%" y2="20%" class="app-line" stroke-width="2" stroke-dasharray="4 3" />
+          <!-- SVG Donut Chart (Exact segmented geometry) -->
+          <svg class="w-64 h-64 -rotate-90 transform" viewBox="0 0 100 100">
+            <!-- Background track ring -->
+            <circle cx="50" cy="50" r="38" fill="transparent" stroke="currentColor" stroke-width="12" class="opacity-10" />
+
+            <!-- Segment 1: Dining & Food (Pink, 24%) -->
+            <circle cx="50" cy="50" r="38" fill="transparent" stroke-width="12"
+                    stroke-dasharray="57.3 238.7" stroke-dashoffset="0"
+                    class="segment-food transition-all" />
+
+            <!-- Segment 2: Travel & Flights (Orange, 22%) -->
+            <circle cx="50" cy="50" r="38" fill="transparent" stroke-width="12"
+                    stroke-dasharray="52.5 238.7" stroke-dashoffset="-57.3"
+                    class="segment-travel transition-all" />
+
+            <!-- Segment 3: Housing & Rent (Cyan, 20%) -->
+            <circle cx="50" cy="50" r="38" fill="transparent" stroke-width="12"
+                    stroke-dasharray="47.7 238.7" stroke-dashoffset="-109.8"
+                    class="segment-house transition-all" />
+
+            <!-- Segment 4: Cafes & Drinks (Green, 15%) -->
+            <circle cx="50" cy="50" r="38" fill="transparent" stroke-width="12"
+                    stroke-dasharray="35.8 238.7" stroke-dashoffset="-157.5"
+                    class="segment-bar transition-all" />
+
+            <!-- Segment 5: Transport & Fuel (Red, 13%) -->
+            <circle cx="50" cy="50" r="38" fill="transparent" stroke-width="12"
+                    stroke-dasharray="31.0 238.7" stroke-dashoffset="-193.3"
+                    class="segment-car transition-all" />
+
+            <!-- Segment 6: GROCERY (Yellow, 6% - highlighted from your sketch) -->
+            <circle cx="50" cy="50" r="38" fill="transparent" stroke-width="14"
+                    stroke-dasharray="14.3 238.7" stroke-dashoffset="-224.3"
+                    class="segment-grocery transition-all" />
           </svg>
 
-          <!-- ================= CENTER HUB (THE CIRCLE IN YOUR DRAWING) ================= -->
-          <div class="app-hub w-48 h-48 flex flex-col items-center justify-center p-4 text-center z-10 cursor-pointer hover:scale-105 transition-transform" onclick="openAddModal()">
-            <span class="text-[11px] font-bold uppercase tracking-wider opacity-60">Total Spent</span>
-            <div class="text-3xl font-extrabold tracking-tight mt-0.5">$1,840</div>
-            <div class="text-[11px] font-medium opacity-75 mt-1">Monthly Budget: $2,500</div>
-            <div class="w-24 bg-black/10 dark:bg-white/10 h-1.5 rounded-full mt-2 overflow-hidden">
-              <div class="bg-emerald-500 h-full rounded-full" style="width: 73.6%"></div>
-            </div>
-            <span class="text-[10px] opacity-60 mt-1">73.6% used</span>
+          <!-- Inside Donut Center: Total Expenses (Matching Spendee center text) -->
+          <div class="absolute flex flex-col items-center justify-center text-center pointer-events-none">
+            <span class="text-3xl font-black tracking-tight leading-none">-1 574</span>
+            <span class="text-[11px] font-bold uppercase tracking-wider opacity-60 mt-1">Total expenses</span>
+            <span class="text-[10px] font-semibold text-emerald-500 mt-1">87% of monthly budget</span>
           </div>
 
-          <!-- ================= RADIATING CATEGORIES (SPOKES) ================= -->
-
-          <!-- 1. Top: Housing / Rent -->
-          <div class="category-bubble absolute top-2 left-1/2 -translate-x-1/2 px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold cursor-pointer" onclick="filterCategory('Housing')">
-            <span>🏠</span>
-            <span>Housing</span>
-            <span class="opacity-70 font-normal">$750</span>
+          <!-- ================= FLOATING CATEGORY BADGES AROUND THE DONUT (MATCHING SPENDEE) ================= -->
+          <!-- 1. Dining (Pink, Top-Right 24%) -->
+          <div class="donut-badge absolute top-6 right-2 flex items-center gap-1 app-card px-2 py-1 rounded-full text-xs font-black shadow-md border-pink-400/40">
+            <span class="w-4 h-4 rounded-full bg-pink-500 text-white flex items-center justify-center text-[10px]">🍽️</span>
+            <span class="text-pink-500">24%</span>
           </div>
 
-          <!-- 2. Top-Right: GROCERY (From your drawing!) -->
-          <div class="category-bubble absolute top-12 right-2 md:right-8 px-3.5 py-2 flex items-center gap-1.5 text-xs font-bold cursor-pointer ring-2 ring-emerald-500/30" onclick="filterCategory('Grocery')">
-            <span>🛒</span>
-            <span>Grocery</span>
-            <span class="text-emerald-600 dark:text-emerald-400 font-extrabold">$420</span>
+          <!-- 2. Travel (Orange, Top-Left 22%) -->
+          <div class="donut-badge absolute top-10 left-2 flex items-center gap-1 app-card px-2 py-1 rounded-full text-xs font-black shadow-md border-orange-400/40">
+            <span class="w-4 h-4 rounded-full bg-orange-500 text-white flex items-center justify-center text-[10px]">✈️</span>
+            <span class="text-orange-500">22%</span>
           </div>
 
-          <!-- 3. Right: Transport -->
-          <div class="category-bubble absolute top-1/2 right-0 md:right-4 -translate-y-1/2 px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold cursor-pointer" onclick="filterCategory('Transport')">
-            <span>🚗</span>
-            <span>Transport</span>
-            <span class="opacity-70 font-normal">$180</span>
+          <!-- 3. Housing (Cyan, Left 20%) -->
+          <div class="donut-badge absolute top-1/2 left-0 -translate-y-1/2 flex items-center gap-1 app-card px-2 py-1 rounded-full text-xs font-black shadow-md border-cyan-400/40">
+            <span class="w-4 h-4 rounded-full bg-cyan-500 text-white flex items-center justify-center text-[10px]">🏠</span>
+            <span class="text-cyan-500">20%</span>
           </div>
 
-          <!-- 4. Bottom-Right: Entertainment -->
-          <div class="category-bubble absolute bottom-12 right-3 md:right-8 px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold cursor-pointer" onclick="filterCategory('Entertainment')">
-            <span>🍿</span>
-            <span>Fun & Rec</span>
-            <span class="opacity-70 font-normal">$110</span>
+          <!-- 4. GROCERY (Yellow, Right 6% - As sketched in your drawing) -->
+          <div class="donut-badge absolute top-28 right-0 flex items-center gap-1 app-card px-2.5 py-1 rounded-full text-xs font-black shadow-lg ring-2 ring-amber-400 border-amber-400">
+            <span class="w-4 h-4 rounded-full bg-amber-400 text-black flex items-center justify-center text-[10px]">🛒</span>
+            <span class="text-amber-500 font-extrabold">Grocery 6%</span>
           </div>
 
-          <!-- 5. Bottom: Health -->
-          <div class="category-bubble absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold cursor-pointer" onclick="filterCategory('Health')">
-            <span>💊</span>
-            <span>Health</span>
-            <span class="opacity-70 font-normal">$85</span>
+          <!-- 5. Bar & Fun (Green, Bottom-Right 15%) -->
+          <div class="donut-badge absolute bottom-6 right-6 flex items-center gap-1 app-card px-2 py-1 rounded-full text-xs font-black shadow-md border-emerald-400/40">
+            <span class="w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px]">🍸</span>
+            <span class="text-emerald-500">15%</span>
           </div>
 
-          <!-- 6. Bottom-Left: Shopping -->
-          <div class="category-bubble absolute bottom-12 left-3 md:left-8 px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold cursor-pointer" onclick="filterCategory('Shopping')">
-            <span>🛍️</span>
-            <span>Shopping</span>
-            <span class="opacity-70 font-normal">$95</span>
-          </div>
-
-          <!-- 7. Left: Tech / Subscriptions -->
-          <div class="category-bubble absolute top-1/2 left-0 md:left-4 -translate-y-1/2 px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold cursor-pointer" onclick="filterCategory('Subscriptions')">
-            <span>⚡</span>
-            <span>Subs & Tech</span>
-            <span class="opacity-70 font-normal">$60</span>
-          </div>
-
-          <!-- 8. Top-Left: Dining & Cafes -->
-          <div class="category-bubble absolute top-12 left-2 md:left-8 px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold cursor-pointer" onclick="filterCategory('Dining')">
-            <span>☕</span>
-            <span>Cafes & Food</span>
-            <span class="opacity-70 font-normal">$140</span>
-          </div>
-
-        </div>
-
-        <!-- Bottom Quick Drawer: Recent Transactions -->
-        <div class="app-surface p-4 mt-auto">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-xs font-bold uppercase tracking-wider opacity-60">Recent Entries</span>
-            <span class="text-xs font-semibold text-emerald-500 cursor-pointer" onclick="openAddModal()">+ Add New</span>
-          </div>
-          <div class="space-y-2 text-xs">
-            <div class="flex items-center justify-between py-1 border-b border-black/5 dark:border-white/5">
-              <div class="flex items-center gap-2">
-                <span>🛒</span>
-                <span class="font-medium">Organic Market (Grocery)</span>
-              </div>
-              <span class="font-bold text-rose-500">-$42.50</span>
-            </div>
-            <div class="flex items-center justify-between py-1">
-              <div class="flex items-center gap-2">
-                <span>☕</span>
-                <span class="font-medium">Specialty Coffee</span>
-              </div>
-              <span class="font-bold text-rose-500">-$5.80</span>
-            </div>
+          <!-- 6. Car & Transport (Red, Bottom-Center 13%) -->
+          <div class="donut-badge absolute bottom-2 left-16 flex items-center gap-1 app-card px-2 py-1 rounded-full text-xs font-black shadow-md border-rose-400/40">
+            <span class="w-4 h-4 rounded-full bg-rose-500 text-white flex items-center justify-center text-[10px]">🚗</span>
+            <span class="text-rose-500">13%</span>
           </div>
         </div>
+
+        <!-- ================= STATS WIDGETS (EXACTLY AS IN SPENDEE SCREENSHOT) ================= -->
+        <div class="grid grid-cols-2 gap-3 mb-3">
+          <div class="app-card rounded-2xl p-3 text-center">
+            <div class="text-lg font-black tracking-tight">-937</div>
+            <div class="text-[10px] uppercase font-bold opacity-60">Avg expenses</div>
+          </div>
+          <div class="app-card rounded-2xl p-3 text-center">
+            <div class="text-lg font-black tracking-tight">Thursday</div>
+            <div class="text-[10px] uppercase font-bold opacity-60">Busiest day</div>
+          </div>
+        </div>
+
+        <!-- ================= RECENT TRANSACTIONS LIST ================= -->
+        <div class="app-card rounded-2xl p-3 mb-2 space-y-2">
+          <div class="flex items-center justify-between text-[11px] font-bold opacity-60 px-1">
+            <span>RECENT TRANSACTIONS</span>
+            <span class="text-emerald-500 cursor-pointer">+ Add</span>
+          </div>
+
+          <div class="flex items-center justify-between py-1">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full bg-pink-500/20 text-pink-500 flex items-center justify-center text-sm font-bold">🍽️</div>
+              <div>
+                <h4 class="text-xs font-bold leading-none">Personal Dinner</h4>
+                <span class="text-[10px] opacity-60">12 transactions</span>
+              </div>
+            </div>
+            <span class="text-xs font-extrabold text-rose-500">-280 USD</span>
+          </div>
+
+          <div class="flex items-center justify-between py-1">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center text-sm font-bold">🛒</div>
+              <div>
+                <h4 class="text-xs font-bold leading-none">Supermarket Grocery</h4>
+                <span class="text-[10px] opacity-60">Fresh Food Market</span>
+              </div>
+            </div>
+            <span class="text-xs font-extrabold text-rose-500">-94 USD</span>
+          </div>
+        </div>
+
+        <!-- ================= SPENDEE BOTTOM NAVIGATION BAR ================= -->
+        <nav class="app-card rounded-3xl p-2 px-4 flex items-center justify-between mt-auto">
+          <button class="flex flex-col items-center gap-0.5 opacity-60 hover:opacity-100 text-[10px] font-bold">
+            <span class="text-base">📊</span>
+            <span>Timeline</span>
+          </button>
+
+          <button class="flex flex-col items-center gap-0.5 text-emerald-500 text-[10px] font-extrabold">
+            <span class="text-base">🍩</span>
+            <span>Overview</span>
+          </button>
+
+          <!-- Floating Green Center Action Button (from Spendee screenshot) -->
+          <button class="w-11 h-11 -mt-5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-white flex items-center justify-center text-xl font-black shadow-lg shadow-emerald-500/30 transition-transform active:scale-95" title="Add Expense">
+            +
+          </button>
+
+          <button onclick="setScreen('calendar')" class="flex flex-col items-center gap-0.5 opacity-60 hover:opacity-100 text-[10px] font-bold">
+            <span class="text-base">📅</span>
+            <span>Calendar</span>
+          </button>
+
+          <button class="flex flex-col items-center gap-0.5 opacity-60 hover:opacity-100 text-[10px] font-bold">
+            <span class="text-base">⚙️</span>
+            <span>Settings</span>
+          </button>
+        </nav>
 
       </div>
 
-      <!-- ================= PAGE 2: CALENDAR PAGE (DRAWING 2 - 12 MONTH GRID WITH BREAKDOWNS) ================= -->
-      <div id="page-calendar" class="p-5 min-h-full hidden">
+      <!-- ================= SCREEN 2: 2026 CALENDAR BREAKDOWN (EXACT DRAWING 2) ================= -->
+      <div id="screen-calendar" class="p-5 flex-1 flex flex-col justify-between hidden">
         
-        <!-- Header: Back to Hub + Year Header (2026 as in your drawing) -->
-        <div class="flex items-center justify-between mb-5">
-          <button onclick="setScreen('main')" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full app-surface font-bold text-xs hover:opacity-90 transition-opacity">
-            <span>◀</span>
-            <span>Back to Hub</span>
-          </button>
-          
-          <div class="text-center">
-            <h2 class="text-2xl font-black tracking-tight">2026</h2>
-            <span class="text-[11px] opacity-60 font-medium">Yearly Expense Overview</span>
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <button onclick="setScreen('hub')" class="flex items-center gap-1.5 px-3 py-1 rounded-full app-card text-xs font-bold">
+              <span>◀</span>
+              <span>Back</span>
+            </button>
+            <div class="text-center">
+              <h2 class="text-2xl font-black tracking-tight">2026</h2>
+              <span class="text-[10px] uppercase font-bold opacity-60">Calendar Expenses</span>
+            </div>
+            <div class="text-xs font-extrabold text-emerald-500">
+              Total: $12,450
+            </div>
           </div>
 
-          <div class="text-xs font-bold px-3 py-1 rounded-full app-surface">
-            Total: $12,450
+          <!-- 12-Month Grid Matching Drawing 2 -->
+          <div class="grid grid-cols-2 gap-2.5 max-h-[640px] overflow-y-auto pr-1">
+
+            <!-- January (from your sketch: 300) -->
+            <div class="app-card rounded-2xl p-2.5">
+              <div class="flex justify-between items-center">
+                <span class="text-[11px] font-extrabold uppercase">January</span>
+                <span class="text-[9px] px-1.5 rounded bg-emerald-500/20 text-emerald-500 font-bold">OK</span>
+              </div>
+              <div class="text-xl font-black mt-0.5">$300</div>
+              <div class="mt-2 pt-1 border-t border-black/5 dark:border-white/5 space-y-0.5 text-[10px] opacity-75">
+                <div class="flex justify-between"><span>🛒 Grocery</span><span class="font-bold">$160</span></div>
+                <div class="flex justify-between"><span>🚗 Transport</span><span class="font-bold">$80</span></div>
+                <div class="flex justify-between"><span>🍽️ Food</span><span class="font-bold">$60</span></div>
+              </div>
+            </div>
+
+            <!-- February -->
+            <div class="app-card rounded-2xl p-2.5">
+              <div class="flex justify-between items-center">
+                <span class="text-[11px] font-extrabold uppercase">February</span>
+                <span class="text-[9px] px-1.5 rounded bg-emerald-500/20 text-emerald-500 font-bold">OK</span>
+              </div>
+              <div class="text-xl font-black mt-0.5">$450</div>
+              <div class="mt-2 pt-1 border-t border-black/5 dark:border-white/5 space-y-0.5 text-[10px] opacity-75">
+                <div class="flex justify-between"><span>🛒 Grocery</span><span class="font-bold">$220</span></div>
+                <div class="flex justify-between"><span>🏠 Rent</span><span class="font-bold">$130</span></div>
+                <div class="flex justify-between"><span>🍸 Fun</span><span class="font-bold">$100</span></div>
+              </div>
+            </div>
+
+            <!-- March -->
+            <div class="app-card rounded-2xl p-2.5">
+              <div class="flex justify-between items-center">
+                <span class="text-[11px] font-extrabold uppercase">March</span>
+                <span class="text-[9px] px-1.5 rounded bg-emerald-500/20 text-emerald-500 font-bold">OK</span>
+              </div>
+              <div class="text-xl font-black mt-0.5">$620</div>
+              <div class="mt-2 pt-1 border-t border-black/5 dark:border-white/5 space-y-0.5 text-[10px] opacity-75">
+                <div class="flex justify-between"><span>🛒 Grocery</span><span class="font-bold">$300</span></div>
+                <div class="flex justify-between"><span>🚗 Fuel</span><span class="font-bold">$180</span></div>
+                <div class="flex justify-between"><span>⚡ Bills</span><span class="font-bold">$140</span></div>
+              </div>
+            </div>
+
+            <!-- April -->
+            <div class="app-card rounded-2xl p-2.5">
+              <div class="flex justify-between items-center">
+                <span class="text-[11px] font-extrabold uppercase">April</span>
+                <span class="text-[9px] px-1.5 rounded bg-emerald-500/20 text-emerald-500 font-bold">OK</span>
+              </div>
+              <div class="text-xl font-black mt-0.5">$580</div>
+              <div class="mt-2 pt-1 border-t border-black/5 dark:border-white/5 space-y-0.5 text-[10px] opacity-75">
+                <div class="flex justify-between"><span>🛒 Grocery</span><span class="font-bold">$260</span></div>
+                <div class="flex justify-between"><span>💊 Health</span><span class="font-bold">$180</span></div>
+                <div class="flex justify-between"><span>🚗 Car</span><span class="font-bold">$140</span></div>
+              </div>
+            </div>
+
+            <!-- May -->
+            <div class="app-card rounded-2xl p-2.5">
+              <div class="flex justify-between items-center">
+                <span class="text-[11px] font-extrabold uppercase">May</span>
+                <span class="text-[9px] px-1.5 rounded bg-emerald-500/20 text-emerald-500 font-bold">OK</span>
+              </div>
+              <div class="text-xl font-black mt-0.5">$890</div>
+              <div class="mt-2 pt-1 border-t border-black/5 dark:border-white/5 space-y-0.5 text-[10px] opacity-75">
+                <div class="flex justify-between"><span>✈️ Trip</span><span class="font-bold">$450</span></div>
+                <div class="flex justify-between"><span>🛒 Grocery</span><span class="font-bold">$300</span></div>
+                <div class="flex justify-between"><span>🍽️ Food</span><span class="font-bold">$140</span></div>
+              </div>
+            </div>
+
+            <!-- June -->
+            <div class="app-card rounded-2xl p-2.5">
+              <div class="flex justify-between items-center">
+                <span class="text-[11px] font-extrabold uppercase">June</span>
+                <span class="text-[9px] px-1.5 rounded bg-emerald-500/20 text-emerald-500 font-bold">OK</span>
+              </div>
+              <div class="text-xl font-black mt-0.5">$740</div>
+              <div class="mt-2 pt-1 border-t border-black/5 dark:border-white/5 space-y-0.5 text-[10px] opacity-75">
+                <div class="flex justify-between"><span>🛒 Grocery</span><span class="font-bold">$310</span></div>
+                <div class="flex justify-between"><span>🛍️ Clothes</span><span class="font-bold">$230</span></div>
+                <div class="flex justify-between"><span>🚗 Fuel</span><span class="font-bold">$200</span></div>
+              </div>
+            </div>
+
+            <!-- November (from your sketch: 1000) -->
+            <div class="app-card rounded-2xl p-2.5 ring-2 ring-emerald-500 col-span-2">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-black uppercase text-emerald-500">November (Current Month)</span>
+                <span class="text-[9px] px-2 py-0.5 rounded bg-emerald-500 text-white font-extrabold">Active</span>
+              </div>
+              <!-- Big 1000 as sketched -->
+              <div class="text-3xl font-black mt-0.5">$1,000</div>
+              <div class="mt-2 pt-1.5 border-t border-black/10 dark:border-white/10 grid grid-cols-2 gap-2 text-xs font-medium">
+                <div class="flex justify-between"><span>🛒 Grocery</span><span class="font-extrabold">$420</span></div>
+                <div class="flex justify-between"><span>🏠 Housing & Rent</span><span class="font-extrabold">$350</span></div>
+                <div class="flex justify-between"><span>🚗 Transport</span><span class="font-extrabold">$150</span></div>
+                <div class="flex justify-between"><span>🍽️ Dining Out</span><span class="font-extrabold">$80</span></div>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <!-- 12-Month Calendar Grid (Exact representation of Drawing 2) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-
-          <!-- 1. January (From your drawing: 300) -->
-          <div class="app-surface p-3 flex flex-col justify-between hover:border-emerald-500 transition-all cursor-pointer">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider">January</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold">On budget</span>
-              </div>
-              <!-- Big Sum as sketched: 300 -->
-              <div class="text-2xl font-black mt-1">$300</div>
-            </div>
-            <!-- Category breakdown beneath the label (Requested in your prompt!) -->
-            <div class="mt-3 pt-2 border-t border-black/5 dark:border-white/5 space-y-1 text-[11px]">
-              <div class="flex justify-between opacity-80">
-                <span>🛒 Grocery</span>
-                <span class="font-bold">$160</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>🚗 Transport</span>
-                <span class="font-bold">$80</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>🍿 Entertainment</span>
-                <span class="font-bold">$60</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2. February -->
-          <div class="app-surface p-3 flex flex-col justify-between hover:border-emerald-500 transition-all cursor-pointer">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider">February</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold">On budget</span>
-              </div>
-              <div class="text-2xl font-black mt-1">$450</div>
-            </div>
-            <div class="mt-3 pt-2 border-t border-black/5 dark:border-white/5 space-y-1 text-[11px]">
-              <div class="flex justify-between opacity-80">
-                <span>🛒 Grocery</span>
-                <span class="font-bold">$220</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>☕ Dining & Cafes</span>
-                <span class="font-bold">$130</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>🛍️ Shopping</span>
-                <span class="font-bold">$100</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 3. March -->
-          <div class="app-surface p-3 flex flex-col justify-between hover:border-emerald-500 transition-all cursor-pointer">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider">March</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold">On budget</span>
-              </div>
-              <div class="text-2xl font-black mt-1">$620</div>
-            </div>
-            <div class="mt-3 pt-2 border-t border-black/5 dark:border-white/5 space-y-1 text-[11px]">
-              <div class="flex justify-between opacity-80">
-                <span>🛒 Grocery</span>
-                <span class="font-bold">$300</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>🚗 Transport</span>
-                <span class="font-bold">$140</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>⚡ Utilities</span>
-                <span class="font-bold">$180</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 4. April -->
-          <div class="app-surface p-3 flex flex-col justify-between hover:border-emerald-500 transition-all cursor-pointer">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider">April</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold">On budget</span>
-              </div>
-              <div class="text-2xl font-black mt-1">$580</div>
-            </div>
-            <div class="mt-3 pt-2 border-t border-black/5 dark:border-white/5 space-y-1 text-[11px]">
-              <div class="flex justify-between opacity-80">
-                <span>🛒 Grocery</span>
-                <span class="font-bold">$260</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>💊 Health</span>
-                <span class="font-bold">$120</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>🚗 Transport</span>
-                <span class="font-bold">$200</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 5. May -->
-          <div class="app-surface p-3 flex flex-col justify-between hover:border-emerald-500 transition-all cursor-pointer">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider">May</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold">On budget</span>
-              </div>
-              <div class="text-2xl font-black mt-1">$890</div>
-            </div>
-            <div class="mt-3 pt-2 border-t border-black/5 dark:border-white/5 space-y-1 text-[11px]">
-              <div class="flex justify-between opacity-80">
-                <span>🛒 Grocery</span>
-                <span class="font-bold">$340</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>✈️ Travel</span>
-                <span class="font-bold">$350</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>🍿 Entertainment</span>
-                <span class="font-bold">$200</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 6. June -->
-          <div class="app-surface p-3 flex flex-col justify-between hover:border-emerald-500 transition-all cursor-pointer">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider">June</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold">On budget</span>
-              </div>
-              <div class="text-2xl font-black mt-1">$740</div>
-            </div>
-            <div class="mt-3 pt-2 border-t border-black/5 dark:border-white/5 space-y-1 text-[11px]">
-              <div class="flex justify-between opacity-80">
-                <span>🛒 Grocery</span>
-                <span class="font-bold">$310</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>☕ Dining</span>
-                <span class="font-bold">$250</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>🛍️ Shopping</span>
-                <span class="font-bold">$180</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 7. July -->
-          <div class="app-surface p-3 flex flex-col justify-between hover:border-emerald-500 transition-all cursor-pointer">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider">July</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-500 font-bold">Vacation</span>
-              </div>
-              <div class="text-2xl font-black mt-1">$1,420</div>
-            </div>
-            <div class="mt-3 pt-2 border-t border-black/5 dark:border-white/5 space-y-1 text-[11px]">
-              <div class="flex justify-between opacity-80">
-                <span>✈️ Trip / Flights</span>
-                <span class="font-bold">$800</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>🛒 Grocery</span>
-                <span class="font-bold">$320</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>☕ Dining</span>
-                <span class="font-bold">$300</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 8. August -->
-          <div class="app-surface p-3 flex flex-col justify-between hover:border-emerald-500 transition-all cursor-pointer">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider">August</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold">On budget</span>
-              </div>
-              <div class="text-2xl font-black mt-1">$690</div>
-            </div>
-            <div class="mt-3 pt-2 border-t border-black/5 dark:border-white/5 space-y-1 text-[11px]">
-              <div class="flex justify-between opacity-80">
-                <span>🛒 Grocery</span>
-                <span class="font-bold">$290</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>🚗 Transport</span>
-                <span class="font-bold">$220</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>⚡ Subscriptions</span>
-                <span class="font-bold">$180</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 9. September -->
-          <div class="app-surface p-3 flex flex-col justify-between hover:border-emerald-500 transition-all cursor-pointer">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider">September</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold">On budget</span>
-              </div>
-              <div class="text-2xl font-black mt-1">$810</div>
-            </div>
-            <div class="mt-3 pt-2 border-t border-black/5 dark:border-white/5 space-y-1 text-[11px]">
-              <div class="flex justify-between opacity-80">
-                <span>🛒 Grocery</span>
-                <span class="font-bold">$330</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>📚 Education/Courses</span>
-                <span class="font-bold">$290</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>🚗 Transport</span>
-                <span class="font-bold">$190</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 10. October -->
-          <div class="app-surface p-3 flex flex-col justify-between hover:border-emerald-500 transition-all cursor-pointer">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider">October</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold">On budget</span>
-              </div>
-              <div class="text-2xl font-black mt-1">$950</div>
-            </div>
-            <div class="mt-3 pt-2 border-t border-black/5 dark:border-white/5 space-y-1 text-[11px]">
-              <div class="flex justify-between opacity-80">
-                <span>🛒 Grocery</span>
-                <span class="font-bold">$380</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>🛍️ Winter Clothes</span>
-                <span class="font-bold">$320</span>
-              </div>
-              <div class="flex justify-between opacity-80">
-                <span>🚗 Transport</span>
-                <span class="font-bold">$250</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 11. November (From your drawing: 1000) -->
-          <div class="app-surface p-3 flex flex-col justify-between hover:border-emerald-500 transition-all cursor-pointer ring-2 ring-emerald-500">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">November (Current)</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-600 font-extrabold">Drawing #2</span>
-              </div>
-              <!-- Big Sum as sketched: 1000 -->
-              <div class="text-3xl font-black mt-1">$1,000</div>
-            </div>
-            <!-- Category breakdown beneath label -->
-            <div class="mt-3 pt-2 border-t border-black/10 dark:border-white/10 space-y-1 text-[11px]">
-              <div class="flex justify-between font-medium">
-                <span>🛒 Grocery</span>
-                <span class="font-extrabold">$420</span>
-              </div>
-              <div class="flex justify-between font-medium">
-                <span>🏠 Rent / Utilities</span>
-                <span class="font-extrabold">$350</span>
-              </div>
-              <div class="flex justify-between font-medium">
-                <span>🚗 Transport / Fuel</span>
-                <span class="font-extrabold">$150</span>
-              </div>
-              <div class="flex justify-between font-medium">
-                <span>☕ Dining & Coffee</span>
-                <span class="font-extrabold">$80</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 12. December -->
-          <div class="app-surface p-3 flex flex-col justify-between hover:border-emerald-500 transition-all cursor-pointer opacity-75">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider">December</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10 opacity-70">Upcoming</span>
-              </div>
-              <div class="text-2xl font-black mt-1">$0</div>
-            </div>
-            <div class="mt-3 pt-2 border-t border-black/5 dark:border-white/5 space-y-1 text-[11px]">
-              <div class="flex justify-between opacity-60">
-                <span>🎁 Holidays Target</span>
-                <span>$800</span>
-              </div>
-              <div class="flex justify-between opacity-60">
-                <span>🛒 Grocery Target</span>
-                <span>$400</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ================= PAGE 3: CATEGORIES GUIDE & BUILDER ================= -->
-      <div id="page-categories" class="p-5 min-h-full hidden">
-        <div class="flex items-center justify-between mb-5">
-          <button onclick="setScreen('main')" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full app-surface font-bold text-xs hover:opacity-90 transition-opacity">
-            <span>◀</span>
-            <span>Back to Hub</span>
-          </button>
-          
-          <div>
-            <h2 class="text-xl font-black tracking-tight">Suggested Categories</h2>
-            <span class="text-xs opacity-60">Smart financial categorization for your tracker</span>
-          </div>
-          
-          <button onclick="openAddModal()" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 text-white">
-            + Custom
-          </button>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          
-          <!-- Category Group 1: Essentials (Need to survive) -->
-          <div class="app-surface p-4">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-              <h3 class="font-bold text-sm">1. Core Essentials (50% rule)</h3>
-            </div>
-            <div class="space-y-2 text-xs">
-              <div class="p-2.5 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-between">
-                <div>
-                  <span class="font-bold">🛒 Grocery / Supermarket</span>
-                  <p class="text-[11px] opacity-70">Food, kitchen essentials, water, home ingredients</p>
-                </div>
-                <span class="font-bold text-emerald-500">Selected</span>
-              </div>
-              <div class="p-2.5 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-between">
-                <div>
-                  <span class="font-bold">🏠 Housing & Rent</span>
-                  <p class="text-[11px] opacity-70">Rent, mortgage, building maintenance, property taxes</p>
-                </div>
-                <span class="font-bold text-emerald-500">Selected</span>
-              </div>
-              <div class="p-2.5 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-between">
-                <div>
-                  <span class="font-bold">🚗 Transport & Mobility</span>
-                  <p class="text-[11px] opacity-70">Gas/fuel, metro, taxi (Uber), car service, parking</p>
-                </div>
-                <span class="font-bold text-emerald-500">Selected</span>
-              </div>
-              <div class="p-2.5 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-between">
-                <div>
-                  <span class="font-bold">⚡ Utilities & Bills</span>
-                  <p class="text-[11px] opacity-70">Electricity, heating, water, high-speed Wi-Fi, phone sim</p>
-                </div>
-                <span class="font-bold text-emerald-500">Selected</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Category Group 2: Lifestyle & Discretionary (30%) -->
-          <div class="app-surface p-4">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
-              <h3 class="font-bold text-sm">2. Lifestyle & Well-being (30% rule)</h3>
-            </div>
-            <div class="space-y-2 text-xs">
-              <div class="p-2.5 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-between">
-                <div>
-                  <span class="font-bold">☕ Cafes, Dining & Takeout</span>
-                  <p class="text-[11px] opacity-70">Coffee shops, restaurants, food deliveries (Doordash/Glovo)</p>
-                </div>
-                <span class="font-bold text-indigo-500">Selected</span>
-              </div>
-              <div class="p-2.5 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-between">
-                <div>
-                  <span class="font-bold">🍿 Entertainment & Hobbies</span>
-                  <p class="text-[11px] opacity-70">Cinema, concerts, gaming, books, weekend trips</p>
-                </div>
-                <span class="font-bold text-indigo-500">Selected</span>
-              </div>
-              <div class="p-2.5 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-between">
-                <div>
-                  <span class="font-bold">🛍️ Shopping & Apparel</span>
-                  <p class="text-[11px] opacity-70">Clothes, shoes, cosmetics, gadgets, home decor</p>
-                </div>
-                <span class="font-bold text-indigo-500">Selected</span>
-              </div>
-              <div class="p-2.5 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-between">
-                <div>
-                  <span class="font-bold">💊 Health, Gym & Pharmacy</span>
-                  <p class="text-[11px] opacity-70">Doctor visits, gym subscription, supplements, medicine</p>
-                </div>
-                <span class="font-bold text-indigo-500">Selected</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Category Group 3: Tech, Growth & Savings (20%) -->
-          <div class="app-surface p-4 md:col-span-2">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-              <h3 class="font-bold text-sm">3. Growth, Tech & Recurring Subscriptions</h3>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
-              <div class="p-2.5 rounded-lg bg-black/5 dark:bg-white/5">
-                <span class="font-bold">📱 Digital Subscriptions</span>
-                <p class="text-[11px] opacity-70 mt-1">iCloud, Spotify, ChatGPT Plus, YouTube Premium</p>
-              </div>
-              <div class="p-2.5 rounded-lg bg-black/5 dark:bg-white/5">
-                <span class="font-bold">📚 Self-Growth & Education</span>
-                <p class="text-[11px] opacity-70 mt-1">Programming courses, conferences, mentorship, books</p>
-              </div>
-              <div class="p-2.5 rounded-lg bg-black/5 dark:bg-white/5">
-                <span class="font-bold">💰 Emergency Fund & Savings</span>
-                <p class="text-[11px] opacity-70 mt-1">Deposits, investment DCA, rainy day emergency reserve</p>
-              </div>
-            </div>
-          </div>
-
-        </div>
+        <button onclick="setScreen('hub')" class="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-extrabold text-xs shadow-md mt-3">
+          Back to Donut Overview
+        </button>
       </div>
 
     </div>
   </main>
 
-  <!-- MODAL: ADD EXPENSE POPUP -->
-  <div id="addModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="app-surface max-w-sm w-full p-5 shadow-2xl relative">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="font-black text-base">Add New Expense</h3>
-        <button onclick="closeAddModal()" class="w-7 h-7 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center text-xs font-bold">✕</button>
-      </div>
-
-      <div class="space-y-3 text-xs">
-        <div>
-          <label class="block font-bold opacity-75 mb-1">Amount ($)</label>
-          <input type="number" id="inputAmount" placeholder="e.g. 45.00" class="w-full p-2.5 rounded-lg border bg-black/5 dark:bg-white/5 border-black/10 text-base font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500">
-        </div>
-
-        <div>
-          <label class="block font-bold opacity-75 mb-1">Category</label>
-          <select id="inputCategory" class="w-full p-2.5 rounded-lg border bg-black/5 dark:bg-white/5 border-black/10 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
-            <option value="Grocery">🛒 Grocery (Supermarket)</option>
-            <option value="Housing">🏠 Housing & Rent</option>
-            <option value="Transport">🚗 Transport & Mobility</option>
-            <option value="Dining">☕ Dining & Cafes</option>
-            <option value="Entertainment">🍿 Entertainment & Fun</option>
-            <option value="Health">💊 Health & Pharmacy</option>
-            <option value="Shopping">🛍️ Shopping & Apparel</option>
-            <option value="Subscriptions">⚡ Tech & Subscriptions</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block font-bold opacity-75 mb-1">Note (Optional)</label>
-          <input type="text" id="inputNote" placeholder="e.g. Weekly organic veggies" class="w-full p-2.5 rounded-lg border bg-black/5 dark:bg-white/5 border-black/10 text-xs focus:outline-none">
-        </div>
-
-        <button onclick="saveExpense()" class="w-full py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs transition-colors shadow mt-2">
-          Save Expense
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- JAVASCRIPT APP CONTROLLER -->
   <script>
-    let currentTheme = 'nordic';
-    let currentScreen = 'main';
-
     function setTheme(theme) {
-      currentTheme = theme;
-      const frame = document.getElementById('deviceWrapper');
+      const frame = document.getElementById('deviceFrame');
       frame.className = frame.className.replace(/theme-\w+/g, '') + ` theme-${theme}`;
 
-      // Update button highlights
-      ['nordic', 'fintech', 'brutalist', 'apple', 'terminal'].forEach(t => {
+      ['spendee', 'darkglow', 'appleglass', 'terracotta', 'cyberviolet'].forEach(t => {
         const btn = document.getElementById(`btn-${t}`);
         if (t === theme) {
-          btn.className = 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white shadow';
+          btn.className = 'px-3 py-1.5 text-xs font-bold rounded-lg bg-emerald-500 text-white shadow-md';
         } else {
           btn.className = 'px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-800';
         }
       });
     }
 
-    function setDevice(device) {
-      const frame = document.getElementById('deviceWrapper');
-      const btnMobile = document.getElementById('btn-device-mobile');
-      const btnDesktop = document.getElementById('btn-device-desktop');
-
-      if (device === 'mobile') {
-        frame.classList.remove('desktop-frame');
-        frame.classList.add('mobile-frame');
-        btnMobile.className = 'px-3 py-1 rounded-md bg-indigo-600 text-white font-medium flex items-center gap-1.5';
-        btnDesktop.className = 'px-3 py-1 rounded-md text-slate-400 hover:text-white bg-slate-800/60 font-medium flex items-center gap-1.5';
-      } else {
-        frame.classList.remove('mobile-frame');
-        frame.classList.add('desktop-frame');
-        btnDesktop.className = 'px-3 py-1 rounded-md bg-indigo-600 text-white font-medium flex items-center gap-1.5';
-        btnMobile.className = 'px-3 py-1 rounded-md text-slate-400 hover:text-white bg-slate-800/60 font-medium flex items-center gap-1.5';
-      }
-    }
-
     function setScreen(screen) {
-      currentScreen = screen;
-      document.getElementById('page-main').classList.add('hidden');
-      document.getElementById('page-calendar').classList.add('hidden');
-      document.getElementById('page-categories').classList.add('hidden');
+      const hub = document.getElementById('screen-hub');
+      const cal = document.getElementById('screen-calendar');
+      const btnHub = document.getElementById('btn-screen-hub');
+      const btnCal = document.getElementById('btn-screen-calendar');
 
-      document.getElementById(`page-${screen}`).classList.remove('hidden');
-
-      // Update screen button state
-      ['main', 'calendar', 'categories'].forEach(s => {
-        const btn = document.getElementById(`btn-screen-${s}`);
-        if (s === screen) {
-          btn.className = 'px-3 py-1 rounded-md bg-white/20 text-white font-bold flex items-center gap-1.5';
-        } else {
-          btn.className = 'px-3 py-1 rounded-md text-slate-400 hover:text-white bg-slate-800/60 font-medium flex items-center gap-1.5';
-        }
-      });
-    }
-
-    function openAddModal() {
-      document.getElementById('addModal').classList.remove('hidden');
-    }
-
-    function closeAddModal() {
-      document.getElementById('addModal').classList.add('hidden');
-    }
-
-    function filterCategory(catName) {
-      alert(`Category selected: ${catName}. Total spent in ${catName}: viewing transactions.`);
-    }
-
-    function saveExpense() {
-      const amount = document.getElementById('inputAmount').value;
-      const category = document.getElementById('inputCategory').value;
-      if (!amount) {
-        alert('Please enter an amount.');
-        return;
+      if (screen === 'hub') {
+        hub.classList.remove('hidden');
+        cal.classList.add('hidden');
+        btnHub.className = 'px-3 py-1 rounded-md bg-white/20 text-white font-bold flex items-center gap-1.5';
+        btnCal.className = 'px-3 py-1 rounded-md text-slate-400 hover:text-white bg-slate-800/60 font-medium flex items-center gap-1.5';
+      } else {
+        hub.classList.add('hidden');
+        cal.classList.remove('hidden');
+        btnCal.className = 'px-3 py-1 rounded-md bg-white/20 text-white font-bold flex items-center gap-1.5';
+        btnHub.className = 'px-3 py-1 rounded-md text-slate-400 hover:text-white bg-slate-800/60 font-medium flex items-center gap-1.5';
       }
-      alert(`Successfully saved $${amount} to ${category}!`);
-      closeAddModal();
+    }
+
+    function toggleDevice(mode) {
+      const frame = document.getElementById('deviceFrame');
+      const btnMob = document.getElementById('btn-dev-mob');
+      const btnTab = document.getElementById('btn-dev-tab');
+
+      if (mode === 'mobile') {
+        frame.style.maxWidth = '410px';
+        btnMob.className = 'px-2.5 py-0.5 rounded bg-indigo-600 text-white font-bold';
+        btnTab.className = 'px-2.5 py-0.5 rounded bg-slate-800 text-slate-300';
+      } else {
+        frame.style.maxWidth = '900px';
+        btnTab.className = 'px-2.5 py-0.5 rounded bg-indigo-600 text-white font-bold';
+        btnMob.className = 'px-2.5 py-0.5 rounded bg-slate-800 text-slate-300';
+      }
     }
   </script>
 </body>
