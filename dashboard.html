@@ -266,7 +266,6 @@
   <div class="topbar">
     <div>
       <h1>Good morning, Emir 👋</h1>
-      <p id="sub-date">Loading…</p>
     </div>
     <div class="topbar-right">
       <div id="cloud-status-badge" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:5px 12px;border-radius:99px;background:rgba(16,185,129,.12);color:var(--pos);border:1px solid rgba(16,185,129,.2);">
@@ -281,10 +280,6 @@
         <div class="theme-swatch"        data-t="forest"   onclick="setTheme('forest')"></div>
         <div class="theme-swatch"        data-t="midnight" onclick="setTheme('midnight')"></div>
       </div>
-      <button class="btn btn-ghost" onclick="resetToSampleData()" title="Reload rich sample data">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
-        Demo Data
-      </button>
       <button class="btn btn-ghost" onclick="setBudget()">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         Set Budget
@@ -661,13 +656,6 @@ function initApp() {
   updateCategoryOptions();
   renderAll();
   syncWithSupabase();
-
-  // Update greeting
-  const now = new Date();
-  const subDate = document.getElementById('sub-date');
-  if (subDate) subDate.textContent = `Here's your financial snapshot for ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
-  const calYear = document.getElementById('cal-year');
-  if (calYear) calYear.textContent = now.getFullYear();
 }
 
 if (document.readyState === 'loading') {
@@ -684,10 +672,31 @@ function setTheme(t, persist = true) {
   if (persist) saveThemeLS(t);
 }
 
-/* ─── MONTH TABS ────────────────────────────────────────── */
+/* ─── YEAR & MONTH TABS ─────────────────────────────────── */
+function changeYear(delta) {
+  activeYear += delta;
+  calYear = activeYear;
+  buildMonthTabs();
+  renderAll();
+}
+
+function setYear(y) {
+  activeYear = y;
+  calYear = y;
+  buildMonthTabs();
+  renderAll();
+}
+
 function buildMonthTabs() {
   const row = document.getElementById('month-row');
-  row.innerHTML = '<span class="m-lbl">Month:</span>';
+  row.innerHTML = `
+    <div style="display:inline-flex;align-items:center;gap:3px;background:var(--surface);padding:3px 7px;border-radius:50px;border:1.5px solid var(--border);margin-right:10px;box-shadow:0 2px 8px rgba(0,0,0,.03);">
+      <button onclick="changeYear(-1)" style="border:none;background:transparent;color:var(--txt2);cursor:pointer;padding:2px 7px;font-size:11px;font-weight:700;border-radius:50px;" title="Previous Year">◀</button>
+      <span style="font-size:13px;font-weight:800;color:var(--accent);min-width:44px;text-align:center;">${activeYear}</span>
+      <button onclick="changeYear(1)" style="border:none;background:transparent;color:var(--txt2);cursor:pointer;padding:2px 7px;font-size:11px;font-weight:700;border-radius:50px;" title="Next Year">▶</button>
+    </div>
+    <span class="m-lbl">Month:</span>
+  `;
   MONTHS.forEach((m, i) => {
     const el = document.createElement('div');
     el.className = 'm-tab' + (i === activeMonth ? ' active' : '');
@@ -908,13 +917,11 @@ function renderSidebar(list) {
 let calYear = new Date().getFullYear();
 
 function changeCalYear(delta) {
-  calYear += delta;
-  renderCalendar();
+  changeYear(delta);
 }
 
 function setCalYear(y) {
-  calYear = y;
-  renderCalendar();
+  setYear(y);
 }
 
 function renderCalendar() {
