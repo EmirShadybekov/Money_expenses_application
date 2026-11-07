@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Emir&Co — Personal Finance</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -49,8 +48,15 @@
       --pos:#34D399; --neg:#F87171; --shadow:0 8px 40px rgba(96,165,250,.18);
     }
 
-    /* ── BASE ───────────────────────────────────────────── */
-    body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--txt); min-height:100vh; display:flex; transition:background .35s,color .35s; }
+    /* ── BASE (Instant loading, modern system UI typography) ── */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--txt);
+      min-height: 100vh;
+      display: flex;
+      transition: background .35s, color .35s;
+    }
     ::-webkit-scrollbar { width:4px; }
     ::-webkit-scrollbar-thumb { background:var(--border); border-radius:99px; }
 
@@ -232,11 +238,11 @@
   </div>
 
   <div class="nav-sec">Main</div>
-  <a class="nav-link active" onclick="showPage('overview')">
+  <a class="nav-link nav-page-link active" id="nav-overview" onclick="showPage('overview')">
     <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
     Overview
   </a>
-  <a class="nav-link" onclick="showPage('calendar')">
+  <a class="nav-link nav-page-link" id="nav-calendar" onclick="showPage('calendar')">
     <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="3"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
     Calendar
   </a>
@@ -271,6 +277,10 @@
         <div class="theme-swatch"        data-t="forest"   onclick="setTheme('forest')"></div>
         <div class="theme-swatch"        data-t="midnight" onclick="setTheme('midnight')"></div>
       </div>
+      <button class="btn btn-ghost" onclick="resetToSampleData()" title="Reload rich sample data">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+        Demo Data
+      </button>
       <button class="btn btn-ghost" onclick="setBudget()">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         Set Budget
@@ -375,10 +385,10 @@
 
 <!-- ══ ADD EXPENSE MODAL ═══════════════════════════════════ -->
 <div class="overlay" id="overlay" onclick="closeModal(event)">
-  <div class="modal" onclick="e=>e.stopPropagation()">
+  <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-title">
       Add New Entry
-      <button class="close-btn" onclick="closeModal()">✕</button>
+      <button class="close-btn" onclick="closeModal()" type="button">✕</button>
     </div>
 
     <div class="type-tabs">
@@ -442,9 +452,58 @@ const CATS = {
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const SHORT  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
+/* ─── SAMPLE SEED DATA ──────────────────────────────────── */
+function getDefaultData() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = now.getMonth();
+  const pad = n => String(n).padStart(2, '0');
+  const dStr = (year, month, day) => `${year}-${pad(month + 1)}-${pad(day)}`;
+
+  const currentMonthEntries = [
+    { id: 'e1', amount: 4800.00, category: 'Income', note: 'Monthly Salary', date: dStr(y, m, 1), type: 'income' },
+    { id: 'e2', amount: 1250.00, category: 'Housing', note: 'Apartment rent', date: dStr(y, m, 2), type: 'expense' },
+    { id: 'e3', amount: 385.40, category: 'Grocery', note: 'Whole Foods grocery', date: dStr(y, m, 3), type: 'expense' },
+    { id: 'e4', amount: 215.00, category: 'Dining', note: 'Family dinner & cafe', date: dStr(y, m, 4), type: 'expense' },
+    { id: 'e5', amount: 110.00, category: 'Transport', note: 'Fuel & Metro transit', date: dStr(y, m, 5), type: 'expense' },
+    { id: 'e6', amount: 54.99, category: 'Subscriptions', note: 'Spotify, iCloud & Netflix', date: dStr(y, m, 6), type: 'expense' },
+    { id: 'e7', amount: 95.00, category: 'Health', note: 'Gym & Sports vitamins', date: dStr(y, m, 7), type: 'expense' },
+    { id: 'e8', amount: 160.00, category: 'Shopping', note: 'New sneakers', date: dStr(y, m, 8), type: 'expense' },
+    { id: 'e9', amount: 75.00, category: 'Entertainment', note: 'Cinema & weekend event', date: dStr(y, m, 9), type: 'expense' }
+  ];
+
+  // Seed previous months for 6-month historical chart and 12-month calendar
+  const pastEntries = [];
+  for (let i = 1; i <= 5; i++) {
+    let pm = m - i;
+    let py = y;
+    if (pm < 0) { pm += 12; py -= 1; }
+    pastEntries.push(
+      { id: 'p' + i + '_1', amount: 4800.00, category: 'Income', note: 'Salary', date: dStr(py, pm, 1), type: 'income' },
+      { id: 'p' + i + '_2', amount: 1250.00, category: 'Housing', note: 'Rent', date: dStr(py, pm, 2), type: 'expense' },
+      { id: 'p' + i + '_3', amount: 330.00 + (i * 15), category: 'Grocery', note: 'Groceries', date: dStr(py, pm, 4), type: 'expense' },
+      { id: 'p' + i + '_4', amount: 195.00 - (i * 10), category: 'Dining', note: 'Restaurants', date: dStr(py, pm, 10), type: 'expense' },
+      { id: 'p' + i + '_5', amount: 95.00 + (i * 8), category: 'Transport', note: 'Transit', date: dStr(py, pm, 15), type: 'expense' }
+    );
+  }
+
+  const initial = [...currentMonthEntries, ...pastEntries];
+  saveDB(initial);
+  return initial;
+}
+
 /* ─── LOCAL DATABASE (localStorage) ────────────────────── */
 function loadDB() {
-  try { return JSON.parse(localStorage.getItem('emirco_entries') || '[]'); } catch { return []; }
+  try {
+    const raw = localStorage.getItem('emirco_entries');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return getDefaultData();
 }
 function saveDB(data) {
   localStorage.setItem('emirco_entries', JSON.stringify(data));
@@ -462,6 +521,14 @@ function saveThemeLS(t) {
   localStorage.setItem('emirco_theme', t);
 }
 
+function resetToSampleData() {
+  if (confirm('Load rich sample data? This will populate your dashboard with demonstration expenses and income.')) {
+    db = getDefaultData();
+    saveDB(db);
+    renderAll();
+  }
+}
+
 /* ─── STATE ─────────────────────────────────────────────── */
 let db          = loadDB();
 let budget      = loadBudget();
@@ -469,8 +536,8 @@ let activeMonth = new Date().getMonth();
 let activeYear  = new Date().getFullYear();
 let entryType   = 'expense';
 
-/* ─── INIT ──────────────────────────────────────────────── */
-window.onload = () => {
+/* ─── INIT (Instant execution, zero delay) ──────────────── */
+function initApp() {
   setTheme(loadTheme(), false);
   buildMonthTabs();
   setDateDefault();
@@ -478,10 +545,17 @@ window.onload = () => {
 
   // Update greeting
   const now = new Date();
-  document.getElementById('sub-date').textContent =
-    `Here's your financial snapshot for ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
-  document.getElementById('cal-year').textContent = now.getFullYear();
-};
+  const subDate = document.getElementById('sub-date');
+  if (subDate) subDate.textContent = `Here's your financial snapshot for ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+  const calYear = document.getElementById('cal-year');
+  if (calYear) calYear.textContent = now.getFullYear();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 /* ─── THEME ─────────────────────────────────────────────── */
 function setTheme(t, persist = true) {
@@ -737,7 +811,7 @@ function renderCalendar() {
     const card = document.createElement('div');
     card.className = 'cal-card' + (isCur ? ' featured' : '');
     card.innerHTML = `
-      <div class="cal-m ${isCur?'cur'}">${name}${isCur?' · Now':''}</div>
+      <div class="cal-m ${isCur?'cur':''}">${name}${isCur?' · Now':''}</div>
       <div class="cal-amt ${isCur?'big':''}" style="${mo_total>budget&&budget>0?'color:var(--neg)':''}">${mo_total>0?fmt(mo_total):'—'}</div>
       <div class="cal-rows">
         ${top3.length ? top3.map(([c,a]) => `<div class="cal-r"><span>${(CATS[c]||CATS.Other).icon} ${c}</span><span>${fmt(a)}</span></div>`).join('') : '<div class="cal-r" style="color:var(--txt2)">No data</div>'}
@@ -814,11 +888,13 @@ function setBudget() {
 /* ─── PAGE SWITCHING ────────────────────────────────────── */
 function showPage(p) {
   document.querySelectorAll('.page').forEach(el => el.classList.remove('vis'));
-  document.getElementById('page-' + p).classList.add('vis');
-  document.querySelectorAll('.nav-link').forEach((el,i) => {
-    el.classList.remove('active');
-    if ((p==='overview'&&i===0)||(p==='calendar'&&i===1)) el.classList.add('active');
-  });
+  const targetPage = document.getElementById('page-' + p);
+  if (targetPage) targetPage.classList.add('vis');
+
+  document.querySelectorAll('.nav-page-link').forEach(el => el.classList.remove('active'));
+  const activeLink = document.getElementById('nav-' + p);
+  if (activeLink) activeLink.classList.add('active');
+
   if (p === 'calendar') renderCalendar();
 }
 
