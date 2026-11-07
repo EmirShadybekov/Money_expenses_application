@@ -264,12 +264,6 @@
     <div class="prog"><div class="pf" id="sw-bar" style="width:0%"></div></div>
     <div style="font-size:11px;color:var(--txt2);margin-top:5px;" id="sw-pct">Budget used: 0%</div>
   </div>
-
-  <div class="sidebar-wallet" style="margin-top:10px;background:rgba(16,185,129,.07);border-color:rgba(16,185,129,.2);">
-    <div class="sw-lbl" style="color:var(--pos);font-weight:700;">🐷 Total Saved This Year</div>
-    <div class="sw-bal" id="sw-saved" style="color:var(--pos);font-size:18px;">0,00 zł</div>
-    <div style="font-size:11px;color:var(--txt2);margin-top:4px;" id="sw-savings-rate">Savings Rate: 0%</div>
-  </div>
 </nav>
 
 <!-- ══ MAIN ═══════════════════════════════════════════════ -->
@@ -334,13 +328,13 @@
         <div class="prog" style="margin-top:8px;"><div class="pf" style="width:100%;background:var(--pos)"></div></div>
       </div>
       <div class="card card-sm">
-        <div class="c-lbl">Total Savings</div>
-        <div class="c-val up" id="st-net">0,00 zł</div>
+        <div class="c-lbl">Net Balance</div>
+        <div class="c-val" id="st-net">0,00 zł</div>
         <div style="display:flex;justify-content:space-between;margin-top:5px;">
-          <div class="c-sub" id="st-savings-sub">Saved this month</div>
-          <div class="c-trend up" id="st-savings-rate">0% saved</div>
+          <div class="c-sub" id="st-tx-count">0 transactions</div>
+          <div class="c-trend up">This month</div>
         </div>
-        <div class="prog" style="margin-top:8px;"><div class="pf" style="width:0%;background:var(--pos)" id="st-net-bar"></div></div>
+        <div class="prog" style="margin-top:8px;"><div class="pf" style="width:0%;background:var(--accent2)" id="st-net-bar"></div></div>
       </div>
     </div>
 
@@ -442,7 +436,6 @@
         <option value="Entertainment">🎬 Entertainment</option>
         <option value="Education">📚 Education</option>
         <option value="Travel">✈️ Travel</option>
-        <option value="Savings">🐷 Savings & Vault</option>
         <option value="Parent's Help">👨‍👩‍👧 Parent's Help</option>
         <option value="Income">💰 Income / Salary</option>
         <option value="Other">🔖 Other</option>
@@ -477,7 +470,6 @@ const CATS = {
   'Entertainment': { icon:'🎬', color:'#2DD4BF' },
   'Education':     { icon:'📚', color:'#F97316' },
   'Travel':        { icon:'✈️', color:'#38BDF8' },
-  'Savings':       { icon:'🐷', color:'#10B981' },
 
   // Income
   "Parent's Help": { icon:'👨‍👩‍👧', color:'#10B981' },
@@ -503,7 +495,6 @@ const EXPENSE_CATEGORIES = [
   { value: 'Entertainment', label: '🎬 Entertainment' },
   { value: 'Education', label: '📚 Education' },
   { value: 'Travel', label: '✈️ Travel' },
-  { value: 'Savings', label: '🐷 Savings & Vault' },
   { value: 'Other', label: '🔖 Other Expense' }
 ];
 
@@ -765,11 +756,8 @@ function renderStats(list) {
   document.getElementById('st-bar').style.width        = pct + '%';
   document.getElementById('st-bar').style.background   = pct > 90 ? 'var(--neg)' : pct > 70 ? '#F97316' : 'var(--accent)';
   
-  const savingsSub = document.getElementById('st-savings-sub');
-  if (savingsSub) savingsSub.textContent = `Saved this month`;
-  const savingsRateEl = document.getElementById('st-savings-rate');
-  if (savingsRateEl) savingsRateEl.textContent = `${savingsRate.toFixed(0)}% saved`;
-  document.getElementById('st-net-bar').style.width    = Math.min(savingsRate, 100) + '%';
+  document.getElementById('st-tx-count').textContent   = `${list.length} transactions`;
+  document.getElementById('st-net-bar').style.width    = inc > 0 ? Math.min((net / inc) * 100, 100) + '%' : '0%';
   document.getElementById('tx-count').textContent      = list.length;
 
   // avg across months with data
@@ -918,18 +906,6 @@ function renderSidebar(list) {
   document.getElementById('sw-bar').style.width   = pct + '%';
   document.getElementById('sw-bar').style.background = pct > 90 ? 'var(--neg)' : pct > 70 ? '#F97316' : 'var(--accent)';
   document.getElementById('sw-pct').textContent   = `Budget used: ${pct.toFixed(1)}%`;
-
-  // Total Saved This Year
-  const yearEntries = db.filter(e => new Date(e.date).getFullYear() === activeYear);
-  const yearInc = yearEntries.filter(e => e.type === 'income').reduce((s, e) => s + e.amount, 0);
-  const yearExp = yearEntries.filter(e => e.type === 'expense').reduce((s, e) => s + e.amount, 0);
-  const yearSaved = yearInc - yearExp;
-  const yearRate = yearInc > 0 ? Math.max(0, (yearSaved / yearInc) * 100) : 0;
-
-  const savedEl = document.getElementById('sw-saved');
-  if (savedEl) savedEl.textContent = (yearSaved >= 0 ? '+' : '') + fmt(yearSaved);
-  const rateEl = document.getElementById('sw-savings-rate');
-  if (rateEl) rateEl.textContent = `Savings Rate: ${yearRate.toFixed(1)}%`;
 
   // Category nav links
   const wrap = document.getElementById('side-cats');
