@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Emir&Co — Personal Finance</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <meta name="theme-color" content="#6366F1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Emir&Co">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -252,10 +259,16 @@
 
   <div class="sidebar-wallet" id="side-wallet">
     <div class="sw-lbl">Total Spent This Month</div>
-    <div class="sw-bal" id="sw-spent">$0</div>
+    <div class="sw-bal" id="sw-spent">0,00 zł</div>
     <div class="sw-sub" id="sw-left">Loading…</div>
     <div class="prog"><div class="pf" id="sw-bar" style="width:0%"></div></div>
     <div style="font-size:11px;color:var(--txt2);margin-top:5px;" id="sw-pct">Budget used: 0%</div>
+  </div>
+
+  <div class="sidebar-wallet" style="margin-top:10px;background:rgba(16,185,129,.07);border-color:rgba(16,185,129,.2);">
+    <div class="sw-lbl" style="color:var(--pos);font-weight:700;">🐷 Total Saved This Year</div>
+    <div class="sw-bal" id="sw-saved" style="color:var(--pos);font-size:18px;">0,00 zł</div>
+    <div style="font-size:11px;color:var(--txt2);margin-top:4px;" id="sw-savings-rate">Savings Rate: 0%</div>
   </div>
 </nav>
 
@@ -268,6 +281,10 @@
       <h1>Good morning, Emir 👋</h1>
     </div>
     <div class="topbar-right">
+      <button class="btn btn-ghost" id="install-btn" onclick="triggerInstall()" style="display:none;color:var(--accent);border-color:var(--accent);">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Install App
+      </button>
       <div id="cloud-status-badge" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:5px 12px;border-radius:99px;background:rgba(16,185,129,.12);color:var(--pos);border:1px solid rgba(16,185,129,.2);">
         <span style="width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block;"></span>
         <span id="cloud-status-text">Cloud Sync</span>
@@ -303,27 +320,27 @@
     <div class="g3" id="stat-cards">
       <div class="card card-sm">
         <div class="c-lbl">Total Spent</div>
-        <div class="c-val" id="st-spent">$0</div>
+        <div class="c-val" id="st-spent">0,00 zł</div>
         <div style="display:flex;justify-content:space-between;margin-top:5px;">
-          <div class="c-sub" id="st-budget-lbl">of $0 budget</div>
+          <div class="c-sub" id="st-budget-lbl">of 0,00 zł budget</div>
           <div class="c-trend" id="st-pct">0%</div>
         </div>
         <div class="prog" style="margin-top:8px;"><div class="pf" id="st-bar" style="width:0%"></div></div>
       </div>
       <div class="card card-sm">
         <div class="c-lbl">Total Income</div>
-        <div class="c-val up" id="st-income">$0</div>
+        <div class="c-val up" id="st-income">0,00 zł</div>
         <div style="margin-top:5px;"><div class="c-sub">Recorded this month</div></div>
         <div class="prog" style="margin-top:8px;"><div class="pf" style="width:100%;background:var(--pos)"></div></div>
       </div>
       <div class="card card-sm">
-        <div class="c-lbl">Net Balance</div>
-        <div class="c-val" id="st-net">$0</div>
+        <div class="c-lbl">Total Savings</div>
+        <div class="c-val up" id="st-net">0,00 zł</div>
         <div style="display:flex;justify-content:space-between;margin-top:5px;">
-          <div class="c-sub" id="st-tx-count">0 transactions</div>
-          <div class="c-trend up">This month</div>
+          <div class="c-sub" id="st-savings-sub">Saved this month</div>
+          <div class="c-trend up" id="st-savings-rate">0% saved</div>
         </div>
-        <div class="prog" style="margin-top:8px;"><div class="pf" style="width:0%;background:var(--accent2)" id="st-net-bar"></div></div>
+        <div class="prog" style="margin-top:8px;"><div class="pf" style="width:0%;background:var(--pos)" id="st-net-bar"></div></div>
       </div>
     </div>
 
@@ -337,7 +354,7 @@
               <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-opacity=".07" stroke-width="10"/>
             </svg>
             <div class="donut-ctr">
-              <div class="d-big" id="d-total">$0</div>
+              <div class="d-big" id="d-total">0,00 zł</div>
               <div class="d-sm">Total spent</div>
               <div class="d-pct" id="d-pct">—</div>
             </div>
@@ -350,7 +367,7 @@
         <div class="bar-chart" id="bar-chart"></div>
         <div class="div"></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-          <div><div class="c-lbl">Avg / Month</div><div style="font-size:17px;font-weight:800;color:var(--txt);" id="avg-mo">$0</div></div>
+          <div><div class="c-lbl">Avg / Month</div><div style="font-size:17px;font-weight:800;color:var(--txt);" id="avg-mo">0,00 zł</div></div>
           <div><div class="c-lbl">Transactions</div><div style="font-size:17px;font-weight:800;color:var(--txt);" id="tx-count">0</div></div>
         </div>
       </div>
@@ -388,7 +405,7 @@
         </div>
         <p style="font-size:12px;color:var(--txt2);margin-top:4px;">Monthly spending breakdown & category details for selected year</p>
       </div>
-      <div style="font-size:14px;font-weight:800;color:var(--pos);background:var(--surface);padding:8px 16px;border-radius:14px;border:1px solid var(--border);box-shadow:var(--shadow);" id="cal-total">Total: $0</div>
+      <div style="font-size:14px;font-weight:800;color:var(--pos);background:var(--surface);padding:8px 16px;border-radius:14px;border:1px solid var(--border);box-shadow:var(--shadow);" id="cal-total">Total: 0,00 zł</div>
     </div>
     <div class="g-cal" id="cal-grid"></div>
   </div>
@@ -409,8 +426,8 @@
     </div>
 
     <div class="form-group">
-      <label class="form-label">Amount ($)</label>
-      <input class="form-input" id="f-amount" type="number" placeholder="0.00" min="0" step="0.01">
+      <label class="form-label">Amount (zł)</label>
+      <input class="form-input" id="f-amount" type="number" placeholder="0.00 zł" min="0" step="0.01">
     </div>
     <div class="form-group">
       <label class="form-label">Category</label>
@@ -425,6 +442,7 @@
         <option value="Entertainment">🎬 Entertainment</option>
         <option value="Education">📚 Education</option>
         <option value="Travel">✈️ Travel</option>
+        <option value="Savings">🐷 Savings & Vault</option>
         <option value="Parent's Help">👨‍👩‍👧 Parent's Help</option>
         <option value="Income">💰 Income / Salary</option>
         <option value="Other">🔖 Other</option>
@@ -459,6 +477,7 @@ const CATS = {
   'Entertainment': { icon:'🎬', color:'#2DD4BF' },
   'Education':     { icon:'📚', color:'#F97316' },
   'Travel':        { icon:'✈️', color:'#38BDF8' },
+  'Savings':       { icon:'🐷', color:'#10B981' },
 
   // Income
   "Parent's Help": { icon:'👨‍👩‍👧', color:'#10B981' },
@@ -484,6 +503,7 @@ const EXPENSE_CATEGORIES = [
   { value: 'Entertainment', label: '🎬 Entertainment' },
   { value: 'Education', label: '📚 Education' },
   { value: 'Travel', label: '✈️ Travel' },
+  { value: 'Savings', label: '🐷 Savings & Vault' },
   { value: 'Other', label: '🔖 Other Expense' }
 ];
 
@@ -732,6 +752,7 @@ function renderStats(list) {
   const spent  = expenses(list).reduce((s, e) => s + e.amount, 0);
   const inc    = income(list).reduce((s, e) => s + e.amount, 0);
   const net    = inc - spent;
+  const savingsRate = inc > 0 ? Math.max(0, (net / inc) * 100) : 0;
   const pct    = budget > 0 ? Math.min((spent / budget) * 100, 100) : 0;
 
   document.getElementById('st-spent').textContent       = fmt(spent);
@@ -743,8 +764,12 @@ function renderStats(list) {
   document.getElementById('st-pct').style.color        = pct > 90 ? 'var(--neg)' : pct > 70 ? '#F97316' : 'var(--pos)';
   document.getElementById('st-bar').style.width        = pct + '%';
   document.getElementById('st-bar').style.background   = pct > 90 ? 'var(--neg)' : pct > 70 ? '#F97316' : 'var(--accent)';
-  document.getElementById('st-tx-count').textContent   = `${list.length} transactions`;
-  document.getElementById('st-net-bar').style.width    = inc > 0 ? Math.min((net / inc) * 100, 100) + '%' : '0%';
+  
+  const savingsSub = document.getElementById('st-savings-sub');
+  if (savingsSub) savingsSub.textContent = `Saved this month`;
+  const savingsRateEl = document.getElementById('st-savings-rate');
+  if (savingsRateEl) savingsRateEl.textContent = `${savingsRate.toFixed(0)}% saved`;
+  document.getElementById('st-net-bar').style.width    = Math.min(savingsRate, 100) + '%';
   document.getElementById('tx-count').textContent      = list.length;
 
   // avg across months with data
@@ -883,7 +908,7 @@ function renderTxList(list) {
   });
 }
 
-/* ─── SIDEBAR CATS ───────────────────────────────────────── */
+/* ─── SIDEBAR CATS & SAVINGS ────────────────────────────── */
 function renderSidebar(list) {
   const spent  = list.reduce((s,e)=>s+e.amount,0);
   const pct    = budget > 0 ? Math.min((spent/budget)*100,100) : 0;
@@ -893,6 +918,18 @@ function renderSidebar(list) {
   document.getElementById('sw-bar').style.width   = pct + '%';
   document.getElementById('sw-bar').style.background = pct > 90 ? 'var(--neg)' : pct > 70 ? '#F97316' : 'var(--accent)';
   document.getElementById('sw-pct').textContent   = `Budget used: ${pct.toFixed(1)}%`;
+
+  // Total Saved This Year
+  const yearEntries = db.filter(e => new Date(e.date).getFullYear() === activeYear);
+  const yearInc = yearEntries.filter(e => e.type === 'income').reduce((s, e) => s + e.amount, 0);
+  const yearExp = yearEntries.filter(e => e.type === 'expense').reduce((s, e) => s + e.amount, 0);
+  const yearSaved = yearInc - yearExp;
+  const yearRate = yearInc > 0 ? Math.max(0, (yearSaved / yearInc) * 100) : 0;
+
+  const savedEl = document.getElementById('sw-saved');
+  if (savedEl) savedEl.textContent = (yearSaved >= 0 ? '+' : '') + fmt(yearSaved);
+  const rateEl = document.getElementById('sw-savings-rate');
+  if (rateEl) rateEl.textContent = `Savings Rate: ${yearRate.toFixed(1)}%`;
 
   // Category nav links
   const wrap = document.getElementById('side-cats');
@@ -1040,7 +1077,7 @@ function deleteEntry(id, e) {
 
 /* ─── SET BUDGET ────────────────────────────────────────── */
 function setBudget() {
-  const b = parseFloat(prompt('Enter your monthly budget ($):', budget));
+  const b = parseFloat(prompt('Wprowadź swój miesięczny budżet (w zł) / Enter monthly budget in zł:', budget));
   if (!isNaN(b) && b > 0) { budget = b; saveBudget(b); renderAll(); }
 }
 
@@ -1057,9 +1094,39 @@ function showPage(p) {
   if (p === 'calendar') renderCalendar();
 }
 
-/* ─── HELPER: format money ───────────────────────────────── */
+/* ─── HELPER: format money (Polish Złoty - zł) ──────────── */
 function fmt(n) {
-  return '$' + (n||0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  return (n || 0).toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' zł';
+}
+
+/* ─── PWA & SERVICE WORKER (Windows & iPhone App) ──────── */
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const btn = document.getElementById('install-btn');
+  if (btn) btn.style.display = 'inline-flex';
+});
+
+function triggerInstall() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        const btn = document.getElementById('install-btn');
+        if (btn) btn.style.display = 'none';
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    alert('Jak zainstalować aplikację / How to install:\n\n• Windows: W przeglądarce Edge lub Chrome kliknij ikonę instalacji w pasku adresu (po prawej stronie u góry).\n\n• iPhone: Otwórz stronę w Safari, kliknij ikonę Udostępnij (kwadrat ze strzałką w górę), a następnie wybierz "Dodaj do ekranu początkowego" (Add to Home Screen).');
+  }
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW info:', err));
+  });
 }
 
 /* Keyboard shortcut: N = new entry */
